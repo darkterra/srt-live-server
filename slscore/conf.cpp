@@ -237,10 +237,10 @@ int sls_conf_parse_block(ifstream& ifs, int& line, sls_conf_base_t * b, bool& ch
 
         //check if the last char is ';', '{', '}'
         line_end_flag = str_line.substr(str_line.length() - 1);
-        printf("DEBUG: C: line: %d\n", line_end_flag);
+        printf("DEBUG: D: line: %s\n", line_end_flag);
 
         if (line_end_flag == ";") {
-            printf("DEBUG: C: line_end_flag == ;\n");
+            printf("DEBUG: line_end_flag == ;\n");
             if (!b) {
                 sls_log(SLS_LOG_ERROR, "line:%d='%s', not found block.", line, str_line.c_str());
                 ret = SLS_ERROR;
@@ -254,6 +254,7 @@ int sls_conf_parse_block(ifstream& ifs, int& line, sls_conf_base_t * b, bool& ch
 
             //split by space
             int index = str_line.find(' ');
+            printf("DEBUG: A: index: %d\n", index);
             if (index == -1) {
                 sls_log(SLS_LOG_ERROR, "line:%d='%s', no space separator.", line, str_line.c_str());
                 ret = SLS_ERROR;
@@ -278,7 +279,7 @@ int sls_conf_parse_block(ifstream& ifs, int& line, sls_conf_base_t * b, bool& ch
             sls_log(SLS_LOG_TRACE, "line:%d, set name='%s', value='%s'.", line, n.c_str(), v.c_str());
 
         } else  if (line_end_flag == "{") {
-            printf("DEBUG: C: line_end_flag == {\n");
+            printf("DEBUG: line_end_flag == {\n");
             str_line = str_line.substr(0, str_line.length() - 1);
             str_line = replace_all(str_line, "\t", "");
             str_line = trim(str_line);
@@ -295,6 +296,7 @@ int sls_conf_parse_block(ifstream& ifs, int& line, sls_conf_base_t * b, bool& ch
             }
             // new block
             block = sls_conf_create_block_by_name(n, p_runtime);
+            printf("DEBUG: A: block: %s\n", block);
             if (!block) {
                 sls_log(SLS_LOG_ERROR, "line:%d, name='%s' not found.", line, n.c_str());
                 ret = SLS_ERROR;
@@ -314,7 +316,7 @@ int sls_conf_parse_block(ifstream& ifs, int& line, sls_conf_base_t * b, bool& ch
                 break;
             }
         } else if (line_end_flag == "}" ) {
-            printf("DEBUG: C: line_end_flag == }\n");
+            printf("DEBUG: line_end_flag == }\n");
             if (str_line != line_end_flag) {
                 sls_log(SLS_LOG_ERROR, "line:%d=‘%s’, end indicator ‘}’ with more info.", str_line.c_str(), line);
                 ret = SLS_ERROR;
@@ -333,7 +335,7 @@ int sls_conf_parse_block(ifstream& ifs, int& line, sls_conf_base_t * b, bool& ch
         str_line_last = str_line;
 
         
-        printf("DEBUG: C: str_line_last: %d\n", str_line_last.c_str());
+        printf("DEBUG: str_line_last: %s\n", str_line_last.c_str());
         printf("DEBUG: end of process loop\n");
     }
     return ret;
