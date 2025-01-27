@@ -215,6 +215,8 @@ int sls_conf_parse_block(ifstream& ifs, int& line, sls_conf_base_t * b, bool& ch
     while(getline(ifs, str_line))
     {
         line ++;
+        printf("DEBUG: line: %d='%s\n", line, str_line.c_str());
+
         sls_log(SLS_LOG_TRACE, "line:%d='%s'", line, str_line.c_str());
         //remove #
         index = str_line.find('#');
@@ -336,6 +338,8 @@ int sls_conf_open(const char * conf_file)
     int         brackets_layers = 0;
 
     sls_runtime_conf_t * p_runtime = NULL;
+    printf("DEBUG: Chargement du fichier de configuration: %s\n", conf_file);
+
 
     sls_log(SLS_LOG_INFO, "sls_conf_open, parsing conf file='%s'.", conf_file);
     if (!ifs.is_open()) {
@@ -343,7 +347,9 @@ int sls_conf_open(const char * conf_file)
         return SLS_ERROR;
     }
 
+    printf("DEBUG: Before sls_conf_parse_block\n");
     ret = sls_conf_parse_block(ifs, line, &sls_first_conf, child, p_runtime, brackets_layers);
+    printf("DEBUG: After sls_conf_parse_block\n");
     if (ret != SLS_OK) {
         if (0 == brackets_layers) {
             sls_log(SLS_LOG_FATAL, "parse conf file='%s' failed.", conf_file);
